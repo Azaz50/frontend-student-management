@@ -197,7 +197,15 @@
     data.students.forEach(student => {
       tbody.innerHTML += `
         <tr>
-          <td><img src="${BASE_URL}/uploads/${student.profile_pic}" width="50" height="50" class="rounded-circle" /></td>
+          <td>
+            <img 
+              src="${student.profile_pic}" 
+              width="50" 
+              height="50" 
+              class="rounded-circle"
+              onerror="this.src='https://via.placeholder.com/50'"
+            />
+          </td>
           <td>${student.first_name}</td>
           <td>${student.last_name}</td>
           <td>${student.email}</td>
