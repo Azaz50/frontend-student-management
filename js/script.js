@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api/users'
+const API_URL = 'https://student-management-lilac-seven.vercel.app/api/users'
 
 
 const loginForm = document.getElementById("loginForm")
