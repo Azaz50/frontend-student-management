@@ -337,7 +337,8 @@
     const student = await res.json()
     // console.log(data)
 
-    document.querySelector("#viewProfilePic").src = `${BASE_URL}/uploads/${student.profile_pic}`
+    // document.querySelector("#viewProfilePic").src = `${BASE_URL}/uploads/${student.profile_pic}`
+    document.querySelector("#viewProfilePic").src = student.profile_pic || 'https://placehold.co/100'
     document.querySelector("#viewName").textContent = `${student.first_name} ${student.last_name}`
     document.querySelector("#viewEmail").textContent = student.email
     document.querySelector("#viewPhone").textContent = student.phone
