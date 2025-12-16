@@ -65,8 +65,7 @@ if(loginForm){
     })
 }
 
-
-// Profile Page
+// ================= PROFILE PAGE =================
 if (window.location.pathname.endsWith('profile.html')) {
   const token = localStorage.getItem('token');
   if (!token) window.location.href = 'index.html';
@@ -75,45 +74,74 @@ if (window.location.pathname.endsWith('profile.html')) {
     const alertBox = document.getElementById('successAlert');
     alertBox.textContent = message;
     alertBox.classList.remove('d-none');
-
-    setTimeout(() => {
-      alertBox.classList.add('d-none');
-    }, 3000);
+    setTimeout(() => alertBox.classList.add('d-none'), 3000);
   };
 
+  const showError = (message) => {
+    const alertBox = document.getElementById('errorAlert');
+    alertBox.textContent = message;
+    alertBox.classList.remove('d-none');
+    setTimeout(() => alertBox.classList.add('d-none'), 3000);
+  };
+
+  // ✅ FETCH PROFILE
   const fetchProfile = async () => {
-    const response = await fetch(`${API_URL}/profile`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await response.json();
-    document.getElementById('username').value = data.username;
-    document.getElementById('email').value = data.email;
+    try {
+      const response = await fetch(`${API_URL}/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        showError(data.message || 'Failed to fetch profile');
+        return;
+      }
+
+      document.getElementById('username').value = data.username;
+      document.getElementById('email').value = data.email;
+
+    } catch (err) {
+      showError('Network error');
+    }
   };
 
   fetchProfile();
 
+  // ✅ UPDATE PROFILE
   document.getElementById('update-profile-btn').addEventListener('click', async () => {
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
 
-    const response = await fetch(`${API_URL}/profile`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ username, email })
-    });
+    try {
+      const response = await fetch(`${API_URL}/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ username, email })
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
+      if (!response.ok) {
+        showError(data.message || 'Update failed');
+        return;
+      }
+
       showSuccess('Profile updated successfully');
-      localStorage.setItem('token', data.token);
+      if (data.token) localStorage.setItem('token', data.token);
       fetchProfile();
+
+    } catch (err) {
+      showError('Network error');
     }
   });
 
+  // ✅ UPDATE PASSWORD
   document.getElementById('password-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -121,20 +149,33 @@ if (window.location.pathname.endsWith('profile.html')) {
     const newPassword = document.getElementById('new-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
 
-    if (newPassword !== confirmPassword) return;
+    if (newPassword !== confirmPassword) {
+      showError('Passwords do not match');
+      return;
+    }
 
-    const response = await fetch(`${API_URL}/password`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ currentPassword, newPassword })
-    });
+    try {
+      const response = await fetch(`${API_URL}/password`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
 
-    if (response.ok) {
+      const data = await response.json();
+
+      if (!response.ok) {
+        showError(data.message || 'Password update failed');
+        return;
+      }
+
       showSuccess('Password updated successfully');
       e.target.reset();
+
+    } catch (err) {
+      showError('Network error');
     }
   });
 }
