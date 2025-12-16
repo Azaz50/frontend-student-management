@@ -140,6 +140,19 @@ if (window.location.pathname.endsWith('profile.html')) {
 }
 
 
+const showSuccess = (message) => {
+  const alertBox = document.getElementById('successAlert');
+  alertBox.textContent = message;
+  alertBox.classList.remove('d-none');
+
+  // Auto hide after 3 seconds
+  setTimeout(() => {
+    alertBox.classList.add('d-none');
+  }, 3000);
+};
+
+
+
 const logoutButton = document.getElementById('logout');
 if(logoutButton) {
     logoutButton.addEventListener('click', () => {
