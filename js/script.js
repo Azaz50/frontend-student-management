@@ -66,7 +66,7 @@ if(loginForm){
 }
 
 // ================= PROFILE PAGE =================
-if (window.location.pathname.endsWith('profile.html')) {
+if (window.location.pathname.includes('profile')) {
   const token = localStorage.getItem('token');
   if (!token) window.location.href = 'index.html';
 
