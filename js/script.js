@@ -66,10 +66,6 @@ if(loginForm){
 }
 
 
-
-
-
-
 // Profile Page
 if(window.location.pathname.endsWith('profile.html')) {
     const token = localStorage.getItem('token');
