@@ -181,16 +181,16 @@ if (window.location.pathname.endsWith('profile.html')) {
 }
 
 
-const showSuccess = (message) => {
-  const alertBox = document.getElementById('successAlert');
-  alertBox.textContent = message;
-  alertBox.classList.remove('d-none');
+// const showSuccess = (message) => {
+//   const alertBox = document.getElementById('successAlert');
+//   alertBox.textContent = message;
+//   alertBox.classList.remove('d-none');
 
-  // Auto hide after 3 seconds
-  setTimeout(() => {
-    alertBox.classList.add('d-none');
-  }, 3000);
-};
+//   // Auto hide after 3 seconds
+//   setTimeout(() => {
+//     alertBox.classList.add('d-none');
+//   }, 3000);
+// };
 
 
 
