@@ -58,6 +58,14 @@
         <input type="text" id="searchInput" class="form-control" placeholder="Search by name">
       </div>
       <div class="d-flex align-items-center gap-3">
+        <div data-bs-toggle="modal" data-bs-target="#sendMailModal" style="cursor:pointer;">
+          <!-- MAIL SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="28" height="28">
+            <path fill="#0d09dc"
+              d="M125.4 128C91.5 128 64 155.5 64 189.4L64 448C64 483.3 92.7 512 128 512L512 512C547.3 512 576 483.3 576 448L576 189.4C576 155.5 548.5 128 514.6 128L125.4 128z" />
+          </svg>
+        </div>
+
         <div data-bs-toggle="modal" data-bs-target="#addStudentModal">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="30" height="30"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#22d61f" d="M320 576C461.4 576 576 461.4 576 320C576 178.6 461.4 64 320 64C178.6 64 64 178.6 64 320C64 461.4 178.6 576 320 576zM296 408L296 344L232 344C218.7 344 208 333.3 208 320C208 306.7 218.7 296 232 296L296 296L296 232C296 218.7 306.7 208 320 208C333.3 208 344 218.7 344 232L344 296L408 296C421.3 296 432 306.7 432 320C432 333.3 421.3 344 408 344L344 344L344 408C344 421.3 333.3 432 320 432C306.7 432 296 421.3 296 408z"/></svg>
         </div>
@@ -157,90 +165,125 @@
   </div>
 </div>
 
-<!-- Edit Student Modal -->
-<div class="modal fade" id="editStudentModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form id="editStudentForm" enctype="multipart/form-data">
-        <div class="modal-header">
-          <h5 class="modal-title">Edit Student</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" id="editStudentId">
-          <div class="mb-2">
-            <input type="text" class="form-control" id="editFirstName" name="first_name" placeholder="First Name" required>
+  <!-- Edit Student Modal -->
+  <div class="modal fade" id="editStudentModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="editStudentForm" enctype="multipart/form-data">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Student</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
-          <div class="mb-2">
-            <input type="text" class="form-control" id="editLastName" name="last_name" placeholder="Last Name" required>
+          <div class="modal-body">
+            <input type="hidden" id="editStudentId">
+            <div class="mb-2">
+              <input type="text" class="form-control" id="editFirstName" name="first_name" placeholder="First Name" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" id="editLastName" name="last_name" placeholder="Last Name" required>
+            </div>
+            <div class="mb-2">
+              <input type="email" class="form-control" id="editEmail" name="email" placeholder="Email" required>
+            </div>
+            <div class="mb-2">
+              <input type="text" class="form-control" id="editPhone" name="phone" placeholder="Phone" required>
+            </div>
+            <div class="mb-2">
+              <select class="form-select" id="editGender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="mb-2">
+              <label>Upload New Profile Picture:</label>
+              <input type="file" class="form-control" id="editProfilePic" name="profile_pic">
+            </div>
           </div>
-          <div class="mb-2">
-            <input type="email" class="form-control" id="editEmail" name="email" placeholder="Email" required>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit">Update</button>
           </div>
-          <div class="mb-2">
-            <input type="text" class="form-control" id="editPhone" name="phone" placeholder="Phone" required>
-          </div>
-          <div class="mb-2">
-            <select class="form-select" id="editGender" name="gender" required>
-              <option value="">Select Gender</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="mb-2">
-            <label>Upload New Profile Picture:</label>
-            <input type="file" class="form-control" id="editProfilePic" name="profile_pic">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" type="submit">Update</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
-<script>
-  // REPLACE 'http://localhost:3000' WITH YOUR VERCEL BACKEND URL AFTER DEPLOYING BACKEND
-  const BASE_URL = 'https://student-management-lilac-seven.vercel.app'; 
-  const apiUrl = `${BASE_URL}/api/students`;
-  let currentPage = 1
-  let currentSearch = ''
+  <!-- Send Mail Modal -->
+  <div class="modal fade" id="sendMailModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="sendMailForm" enctype="multipart/form-data">
+          <div class="modal-header">
+            <h5 class="modal-title">Send Email</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Recipient Email</label>
+              <input type="email" class="form-control" name="to" placeholder="example@gmail.com" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Subject</label>
+              <input type="text" class="form-control" name="subject" placeholder="Enter email subject" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Message</label>
+              <textarea class="form-control" name="text" rows="4" placeholder="Write your message here..." required></textarea>
+            </div>
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Attachment</label>
+              <input type="file" class="form-control" name="file">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Send Email</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-  function checkAuth() {
-    const token = localStorage.getItem("token")
-    if(!token){
-      alert("You must be logged in to view this page")
-      window.location.href = "index.html"
-    }
-    return token
-  }
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+  <script>
+    // REPLACE 'http://localhost:3000' WITH YOUR VERCEL BACKEND URL AFTER DEPLOYING BACKEND
+    const BASE_URL = 'https://student-management-lilac-seven.vercel.app';
+    const apiUrl = `${BASE_URL}/api/students`;
+    const usersApiUrl = `${BASE_URL}/api/users`;
+    let currentPage = 1
+    let currentSearch = ''
 
-  const token = checkAuth()
-
-  // View All Students
-  async function fetchStudents(search = '', page = 1){
-    currentPage = page
-    currentSearch = search
-
-    const res = await fetch(
-      `${apiUrl}?search=${encodeURIComponent(search)}&page=${page}&limit=3`,
-      {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+    function checkAuth() {
+      const token = localStorage.getItem("token")
+      if (!token) {
+        alert("You must be logged in to view this page")
+        window.location.href = "index.html"
       }
-    )
-    const data = await res.json()
-    // console.log(data)
-    
-    const tbody = document.querySelector('#studentTableBody')
-    tbody.innerHTML = ''
+      return token
+    }
 
-    data.students.forEach(student => {
-      tbody.innerHTML += `
+    const token = checkAuth()
+
+    // View All Students
+    async function fetchStudents(search = '', page = 1) {
+      currentPage = page
+      currentSearch = search
+
+      const res = await fetch(
+        `${apiUrl}?search=${encodeURIComponent(search)}&page=${page}&limit=3`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        }
+      )
+      const data = await res.json()
+      // console.log(data)
+
+      const tbody = document.querySelector('#studentTableBody')
+      tbody.innerHTML = ''
+
+      data.students.forEach(student => {
+        tbody.innerHTML += `
         <tr>
           <td>
             <img 
@@ -271,175 +314,202 @@
           </td>
         </tr>
       `
-    });
+      });
 
-    renderPagination(data.totalPage)
-  }
+      renderPagination(data.totalPage)
+    }
 
-  fetchStudents() // Call fetchStudents() when page load first time
+    fetchStudents() // Call fetchStudents() when page load first time
 
-  // Pagination Function
-  function renderPagination(totalPages){
-    const container = document.querySelector("#pagination")
-    container.innerHTML = ''
+    // Pagination Function
+    function renderPagination(totalPages) {
+      const container = document.querySelector("#pagination")
+      container.innerHTML = ''
 
-    // Previous Button
-    const prevli = document.createElement('li')
-    prevli.className = 'page-item' + (currentPage === 1 ? ' disabled' : '')
-    prevli.innerHTML = `<a class="page-link" href="#">Previous</a>`
-    prevli.addEventListener("click", (e)=>{
+      // Previous Button
+      const prevli = document.createElement('li')
+      prevli.className = 'page-item' + (currentPage === 1 ? ' disabled' : '')
+      prevli.innerHTML = `<a class="page-link" href="#">Previous</a>`
+      prevli.addEventListener("click", (e) => {
         e.preventDefault()
         fetchStudents(currentSearch, currentPage - 1)
       })
       container.appendChild(prevli)
 
       // Numbered Pagination
-    for(let i = 1; i <= totalPages; i++){
-      const li = document.createElement('li')
-      li.className = 'page-item' + (i === currentPage ? ' active' : '')
-      li.innerHTML = `<a class="page-link" href="#">${i}</a>`
-      li.addEventListener("click", (e)=>{
-        e.preventDefault()
-        fetchStudents(currentSearch, i)
-      })
-      container.appendChild(li)
-    }
+      for (let i = 1; i <= totalPages; i++) {
+        const li = document.createElement('li')
+        li.className = 'page-item' + (i === currentPage ? ' active' : '')
+        li.innerHTML = `<a class="page-link" href="#">${i}</a>`
+        li.addEventListener("click", (e) => {
+          e.preventDefault()
+          fetchStudents(currentSearch, i)
+        })
+        container.appendChild(li)
+      }
 
-    // Next Button
-    const nextli = document.createElement('li')
-    nextli.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '')
-    nextli.innerHTML = `<a class="page-link" href="#">Next</a>`
-    nextli.addEventListener("click", (e)=>{
+      // Next Button
+      const nextli = document.createElement('li')
+      nextli.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '')
+      nextli.innerHTML = `<a class="page-link" href="#">Next</a>`
+      nextli.addEventListener("click", (e) => {
         e.preventDefault()
         fetchStudents(currentSearch, currentPage + 1)
       })
       container.appendChild(nextli)
-  }
-
-  // View Single Student Record
-  async function viewStudent(id) {
-    const res = await fetch(
-      `${apiUrl}/${id}`,
-      {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      }
-    )
-    const student = await res.json()
-    // console.log(data)
-
-    // document.querySelector("#viewProfilePic").src = `${BASE_URL}/uploads/${student.profile_pic}`
-    document.querySelector("#viewProfilePic").src = student.profile_pic || 'https://placehold.co/100'
-    document.querySelector("#viewName").textContent = `${student.first_name} ${student.last_name}`
-    document.querySelector("#viewEmail").textContent = student.email
-    document.querySelector("#viewPhone").textContent = student.phone
-    document.querySelector("#viewGender").textContent = student.gender
-
-    new bootstrap.Modal(document.querySelector("#viewStudentModal")).show()
-  }
-
-  // Search Student
-  document.querySelector("#searchInput").addEventListener("input", () => {
-    currentPage = 1
-    fetchStudents(document.querySelector("#searchInput").value, currentPage)
-  })
-
-  // Add New Student 
-  document.querySelector("#addStudentForm").addEventListener("submit",async function(e){
-    e.preventDefault()
-
-    const formData = new FormData(this)
-
-    const res = await fetch(apiUrl, {
-      method: 'POST',
-      body: formData,
-      headers: {
-          "Authorization": `Bearer ${token}`,
-      }
-    })
-
-    if(res.ok){
-      this.reset()
-      bootstrap.Modal.getInstance(document.querySelector("#addStudentModal")).hide()
-      fetchStudents()
-    }else{
-      alert('Error creating student.')
     }
-  })
 
-  // Delete Student
-  async function deleteStudent(id){
-    if(confirm("Are you sure to delete this student ?")){
-      await fetch(
-        `${apiUrl}/${id}`,
-        {
-          method: 'DELETE',
+    // View Single Student Record
+    async function viewStudent(id) {
+      const res = await fetch(
+        `${apiUrl}/${id}`, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
         }
       )
-      fetchStudents()
+      const student = await res.json()
+      // console.log(data)
+
+      // document.querySelector("#viewProfilePic").src = `${BASE_URL}/uploads/${student.profile_pic}`
+      document.querySelector("#viewProfilePic").src = student.profile_pic || 'https://placehold.co/100'
+      document.querySelector("#viewName").textContent = `${student.first_name} ${student.last_name}`
+      document.querySelector("#viewEmail").textContent = student.email
+      document.querySelector("#viewPhone").textContent = student.phone
+      document.querySelector("#viewGender").textContent = student.gender
+
+      new bootstrap.Modal(document.querySelector("#viewStudentModal")).show()
     }
-  }
 
-  // Update Student Modal Box
-  async function editStudent(id){
-   
-    const res = await fetch(
-      `${apiUrl}/${id}`,
-      {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-      }
-    )
-    const student = await res.json()
-   
-    document.querySelector('#editStudentId').value = student._id
-    document.querySelector('#editFirstName').value = student.first_name
-    document.querySelector('#editLastName').value = student.last_name
-    document.querySelector('#editEmail').value = student.email
-    document.querySelector('#editPhone').value = student.phone
-    document.querySelector('#editGender').value = student.gender
+    // Search Student
+    document.querySelector("#searchInput").addEventListener("input", () => {
+      currentPage = 1
+      fetchStudents(document.querySelector("#searchInput").value, currentPage)
+    })
 
-    new bootstrap.Modal(document.querySelector("#editStudentModal")).show()
-  }
+    // Add New Student 
+    document.querySelector("#addStudentForm").addEventListener("submit", async function(e) {
+      e.preventDefault()
 
-  // Update Student Record
-  document.querySelector("#editStudentForm").addEventListener("submit",async function(e){
-    e.preventDefault()
+      const formData = new FormData(this)
 
-    const id = document.querySelector("#editStudentId").value
-    
-    const formData = new FormData(this)
-
-    const res = await fetch(
-      `${apiUrl}/${id}`,
-      {
-        method: 'PUT',
+      const res = await fetch(apiUrl, {
+        method: 'POST',
         body: formData,
         headers: {
           "Authorization": `Bearer ${token}`,
-        },
+        }
+      })
+
+      if (res.ok) {
+        this.reset()
+        bootstrap.Modal.getInstance(document.querySelector("#addStudentModal")).hide()
+        fetchStudents()
+      } else {
+        alert('Error creating student.')
       }
-    )
+    })
 
-    if(res.ok){
-      bootstrap.Modal.getInstance(document.querySelector("#editStudentModal")).hide()
-      fetchStudents()
-    }else{
-      alert('Error updating student.')
+    // Delete Student
+    async function deleteStudent(id) {
+      if (confirm("Are you sure to delete this student ?")) {
+        await fetch(
+          `${apiUrl}/${id}`, {
+            method: 'DELETE',
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+          }
+        )
+        fetchStudents()
+      }
     }
-  })
 
-  
-  // Logout Function
-  document.getElementById('logout').addEventListener('click', () => {
-    localStorage.removeItem("token")
-    window.location.href = "index.html"
-  })
-</script>
+    // Update Student Modal Box
+    async function editStudent(id) {
+
+      const res = await fetch(
+        `${apiUrl}/${id}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        }
+      )
+      const student = await res.json()
+
+      document.querySelector('#editStudentId').value = student._id
+      document.querySelector('#editFirstName').value = student.first_name
+      document.querySelector('#editLastName').value = student.last_name
+      document.querySelector('#editEmail').value = student.email
+      document.querySelector('#editPhone').value = student.phone
+      document.querySelector('#editGender').value = student.gender
+
+      new bootstrap.Modal(document.querySelector("#editStudentModal")).show()
+    }
+
+    // Update Student Record
+    document.querySelector("#editStudentForm").addEventListener("submit", async function(e) {
+      e.preventDefault()
+
+      const id = document.querySelector("#editStudentId").value
+
+      const formData = new FormData(this)
+
+      const res = await fetch(
+        `${apiUrl}/${id}`, {
+          method: 'PUT',
+          body: formData,
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        }
+      )
+
+      if (res.ok) {
+        bootstrap.Modal.getInstance(document.querySelector("#editStudentModal")).hide()
+        fetchStudents()
+      } else {
+        alert('Error updating student.')
+      }
+    })
+
+
+    // Logout Function
+    document.getElementById('logout').addEventListener('click', () => {
+      localStorage.removeItem("token")
+      window.location.href = "index.html"
+    })
+
+    // Send Mail
+    document.querySelector("#sendMailForm").addEventListener("submit", async function(e) {
+      e.preventDefault()
+
+      const formData = new FormData(this)
+      const actionUrl = `${usersApiUrl}/send-email`;
+
+      try {
+        const res = await fetch(actionUrl, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          }
+        });
+
+        if (res.ok) {
+          this.reset();
+          bootstrap.Modal.getInstance(document.querySelector("#sendMailModal")).hide();
+          alert('Email sent successfully!');
+        } else {
+          const errorData = await res.json();
+          alert(`Failed to send email: ${errorData.message}`);
+        }
+      } catch (error) {
+        console.error('Error sending email:', error);
+        alert('An error occurred while sending the email.');
+      }
+    });
+  </script>
 </body>
+
 </html>
