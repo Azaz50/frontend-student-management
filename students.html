@@ -498,7 +498,7 @@
           alert('Email sent successfully!');
         } else {
           const errorData = await res.json();
-          alert(`Failed to send email: ${errorData.message}`);
+          alert(`Failed to send email: ${errorData.message} - Details: ${errorData.error}`);
         }
       } catch (error) {
         console.error('Error sending email:', error);
