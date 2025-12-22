@@ -29,7 +29,7 @@
                 <hr>
                 <div id="additional-info">
                     <h4>Additional Information</h4>
-                    <p>This is a sample section for additional student information. You can add more details here as needed.</p>
+                    <p>This is a sample section for additional student information.</p>
                 </div>
             </div>
             <div class="card-footer text-muted text-center">
@@ -59,7 +59,17 @@
             })
             .then(response => response.json())
             .then(student => {
-                document.getElementById('profile-pic').src = student.profile_pic;
+                // Fetch the image and convert it to a data URI
+                fetch(student.profile_pic)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                            document.getElementById('profile-pic').src = reader.result;
+                        };
+                        reader.readAsDataURL(blob);
+                    });
+
                 document.getElementById('student-name').textContent = `${student.first_name} ${student.last_name}`;
                 document.getElementById('student-email').textContent = student.email;
                 document.getElementById('student-phone').textContent = student.phone;
@@ -75,14 +85,17 @@
                 const { jsPDF } = window.jspdf;
                 const pdfContent = document.getElementById('pdf-content');
 
-                html2canvas(pdfContent).then(canvas => {
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdf = new jsPDF('p', 'mm', 'a4');
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                    pdf.save('student-report.pdf');
-                });
+                // Add a short delay to ensure the image loads
+                setTimeout(() => {
+                    html2canvas(pdfContent).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png');
+                        const pdf = new jsPDF('p', 'mm', 'a4');
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                        pdf.save('student-report.pdf');
+                    });
+                }, 1000);
             });
         });
     </script>
